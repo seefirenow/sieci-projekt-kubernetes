@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  node-client:
+    image: node-client
+    stdin_open: true
+    ports:
+      - '3000:3000'
+    networks:
+      - bf 
+  node-server:
+    image: node-server
+    ports:
+      - '8000:8000'
+    networks:
+      - bb
+      - bf
+    depends_on:
+      - mongo
+    
+  mongo:
+    image: mongo:3.6.19-xenial
+    ports:
+      - '27017:27017'
+    networks:
+      - bb
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  bb:
+    driver: bridge
+  bf:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: bridge
+
+
+    
